@@ -1,0 +1,6 @@
+column,p01_train,p99_train,pct_rows_capped
+wage_offer_annual,16869.0,225000.0,1.95
+pw_annual,16848.0,187199.0,1.64
+employer_num_employees_log,1.3862943649291992,12.365633010864258,1.8
+employer_filing_count_log,0.0,9.167119979858398,0.66
+employer_yr_estab,1853.0,2013.0,1.97

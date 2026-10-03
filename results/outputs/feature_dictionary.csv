@@ -1,0 +1,110 @@
+column,description,dtype,scaled_in_B,in_handover_B
+employer_yr_estab,"Employer founding year (winsorised, median-imputed)",float32,True,False
+pw_annual,"Prevailing wage, annualised USD (winsorised)",float32,True,False
+wage_offer_annual,"Offered wage, annualised USD (winsorised)",float32,True,True
+pw_level,"Prevailing-wage level I-IV = 1-4, Unknown = 0",int8,True,True
+edu_worker,"Worker education, High School=1 ... Doctorate=5, Other/Unknown=0",int8,True,False
+edu_required,"Required education, High School=1 ... Doctorate=5, Other/Unknown=0",int8,True,True
+experience_required,1 if the job requires experience,int8,False,True
+soc_11,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_13,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_15,One-hot SOC occupation major group (2-digit code),int8,False,True
+soc_17,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_19,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_21,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_23,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_25,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_27,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_29,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_31,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_33,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_35,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_37,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_39,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_41,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_43,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_45,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_47,One-hot SOC occupation major group (2-digit code),int8,False,True
+soc_49,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_51,One-hot SOC occupation major group (2-digit code),int8,False,True
+soc_53,One-hot SOC occupation major group (2-digit code),int8,False,False
+soc_Unknown,One-hot SOC occupation major group (2-digit code),int8,False,False
+naics_N11,One-hot NAICS industry sector,int8,False,False
+naics_N21,One-hot NAICS industry sector,int8,False,False
+naics_N22,One-hot NAICS industry sector,int8,False,False
+naics_N23,One-hot NAICS industry sector,int8,False,False
+naics_N31,One-hot NAICS industry sector,int8,False,False
+naics_N42,One-hot NAICS industry sector,int8,False,False
+naics_N44,One-hot NAICS industry sector,int8,False,False
+naics_N48,One-hot NAICS industry sector,int8,False,False
+naics_N51,One-hot NAICS industry sector,int8,False,False
+naics_N52,One-hot NAICS industry sector,int8,False,False
+naics_N53,One-hot NAICS industry sector,int8,False,False
+naics_N54,One-hot NAICS industry sector,int8,False,True
+naics_N55,One-hot NAICS industry sector,int8,False,False
+naics_N56,One-hot NAICS industry sector,int8,False,False
+naics_N61,One-hot NAICS industry sector,int8,False,False
+naics_N62,One-hot NAICS industry sector,int8,False,False
+naics_N71,One-hot NAICS industry sector,int8,False,False
+naics_N72,One-hot NAICS industry sector,int8,False,False
+naics_N81,One-hot NAICS industry sector,int8,False,False
+naics_N92,One-hot NAICS industry sector,int8,False,False
+naics_Unknown,One-hot NAICS industry sector,int8,False,False
+region_Midwest,One-hot employer census region,int8,False,False
+region_Northeast,One-hot employer census region,int8,False,False
+region_Outside_US,One-hot employer census region,int8,False,False
+region_South,One-hot employer census region,int8,False,False
+region_Territory,One-hot employer census region,int8,False,False
+region_Unknown,One-hot employer census region,int8,False,False
+region_West,One-hot employer census region,int8,False,False
+pwsrc_CBA,One-hot prevailing-wage source,int8,False,False
+pwsrc_DBA,One-hot prevailing-wage source,int8,False,False
+pwsrc_Employer_Conducted,One-hot prevailing-wage source,int8,False,True
+pwsrc_OES,One-hot prevailing-wage source,int8,False,True
+pwsrc_Other,One-hot prevailing-wage source,int8,False,False
+pwsrc_SCA,One-hot prevailing-wage source,int8,False,False
+pwsrc_Unknown,One-hot prevailing-wage source,int8,False,True
+country_BRAZIL,One-hot citizenship (top 20 + Other),int8,False,False
+country_CANADA,One-hot citizenship (top 20 + Other),int8,False,False
+country_CHINA,One-hot citizenship (top 20 + Other),int8,False,False
+country_FRANCE,One-hot citizenship (top 20 + Other),int8,False,False
+country_GERMANY,One-hot citizenship (top 20 + Other),int8,False,False
+country_INDIA,One-hot citizenship (top 20 + Other),int8,False,True
+country_IRAN,One-hot citizenship (top 20 + Other),int8,False,False
+country_ITALY,One-hot citizenship (top 20 + Other),int8,False,False
+country_JAPAN,One-hot citizenship (top 20 + Other),int8,False,False
+country_MEXICO,One-hot citizenship (top 20 + Other),int8,False,True
+country_NEPAL,One-hot citizenship (top 20 + Other),int8,False,False
+country_PAKISTAN,One-hot citizenship (top 20 + Other),int8,False,False
+country_PHILIPPINES,One-hot citizenship (top 20 + Other),int8,False,True
+country_RUSSIA,One-hot citizenship (top 20 + Other),int8,False,False
+country_SOUTH_KOREA,One-hot citizenship (top 20 + Other),int8,False,False
+country_TAIWAN,One-hot citizenship (top 20 + Other),int8,False,False
+country_TURKEY,One-hot citizenship (top 20 + Other),int8,False,False
+country_UNITED_KINGDOM,One-hot citizenship (top 20 + Other),int8,False,False
+country_VENEZUELA,One-hot citizenship (top 20 + Other),int8,False,False
+country_VIETNAM,One-hot citizenship (top 20 + Other),int8,False,False
+country_Other,One-hot citizenship (top 20 + Other),int8,False,False
+coa_B_2,One-hot class of admission (top 10 + Other),int8,False,False
+coa_E_2,One-hot class of admission (top 10 + Other),int8,False,False
+coa_EWI,One-hot class of admission (top 10 + Other),int8,False,True
+coa_F_1,One-hot class of admission (top 10 + Other),int8,False,False
+coa_H_1B,One-hot class of admission (top 10 + Other),int8,False,True
+coa_L_1,One-hot class of admission (top 10 + Other),int8,False,False
+coa_Not_in_USA,One-hot class of admission (top 10 + Other),int8,False,False
+coa_Parolee,One-hot class of admission (top 10 + Other),int8,False,False
+coa_TN,One-hot class of admission (top 10 + Other),int8,False,False
+coa_Unknown,One-hot class of admission (top 10 + Other),int8,False,True
+coa_Other,One-hot class of admission (top 10 + Other),int8,False,False
+employer_num_employees_log,"log1p(employer employees), winsorised",float32,True,True
+employer_filing_count_log,"log1p(other train filings by the same employer), winsorised",float32,True,True
+wage_to_pw_ratio,"Offered / prevailing wage, clipped to [0, 5]",float32,True,True
+wage_below_pw,1 if offered wage < prevailing wage,int8,False,True
+wage_gap_annual,"Offered minus prevailing wage, USD/yr",float32,True,False
+employer_age,2016 - employer founding year,float32,True,True
+has_agent,1 if filed through an attorney / agent firm,int8,False,True
+same_state,1 if worksite state = employer state,int8,False,False
+edu_meets_requirement,1 if worker education >= required education (both known),int8,False,True
+edu_gap,edu_worker - edu_required (0 if either unknown),int8,True,True
+denied,"TARGET: 1 = Denied, 0 = Certified / Certified-Expired",int8,False,True
+split,"train / test (stratified 80/20, seed 42)",object,False,True

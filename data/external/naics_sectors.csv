@@ -1,0 +1,25 @@
+naics_2digit,naics_sector,sector_key
+11,"Agriculture, Forestry, Fishing and Hunting",N11
+21,"Mining, Quarrying, and Oil and Gas Extraction",N21
+22,Utilities,N22
+23,Construction,N23
+31,Manufacturing,N31
+32,Manufacturing,N31
+33,Manufacturing,N31
+42,Wholesale Trade,N42
+44,Retail Trade,N44
+45,Retail Trade,N44
+48,Transportation and Warehousing,N48
+49,Transportation and Warehousing,N48
+51,Information,N51
+52,Finance and Insurance,N52
+53,Real Estate and Rental and Leasing,N53
+54,"Professional, Scientific, and Technical Services",N54
+55,Management of Companies and Enterprises,N55
+56,Administrative and Support and Waste Management,N56
+61,Educational Services,N61
+62,Health Care and Social Assistance,N62
+71,"Arts, Entertainment, and Recreation",N71
+72,Accommodation and Food Services,N72
+81,Other Services (except Public Administration),N81
+92,Public Administration,N92

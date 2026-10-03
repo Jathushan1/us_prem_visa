@@ -1,0 +1,22 @@
+# Raw dataset (298 MB > GitHub 100 MB limit) — download from Kaggle into data/raw/
+data/raw/*.csv
+
+# Regenerated intermediate stage outputs (run group_pipeline.ipynb to rebuild)
+results/outputs/*.parquet
+
+# Python / virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
