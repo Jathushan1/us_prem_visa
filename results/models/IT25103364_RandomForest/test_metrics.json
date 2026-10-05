@@ -1,0 +1,23 @@
+{
+  "member": "IT25103364",
+  "model": "Random Forest",
+  "variety": "RandomizedSearchCV best",
+  "dataset": "B",
+  "params": {
+    "n_estimators": "100",
+    "min_samples_leaf": "5",
+    "max_features": "sqrt",
+    "max_depth": "20",
+    "class_weight": "{0: 1, 1: 5}"
+  },
+  "threshold": 0.5352,
+  "cv_pr_auc_mean": 0.4722,
+  "cv_pr_auc_std": 0.0107,
+  "test_pr_auc": 0.4645,
+  "test_roc_auc": 0.843,
+  "test_f1_denied": 0.4351,
+  "test_precision_denied": 0.5162,
+  "test_recall_denied": 0.3759,
+  "test_accuracy": 0.9325,
+  "baseline_accuracy_always_approve": 0.9309
+}
