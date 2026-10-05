@@ -1,0 +1,24 @@
+{
+  "member": "IT25101547",
+  "model": "Decision Tree",
+  "variety": "DT GridSearch Best",
+  "dataset": "B",
+  "params": {
+    "class_weight": null,
+    "criterion": "gini",
+    "max_depth": 20,
+    "min_samples_leaf": 1
+  },
+  "threshold": 0.5,
+  "cv_f1_mean": 0.3779,
+  "cv_pr_auc_mean": null,
+  "cv_pr_auc_std": null,
+  "test_pr_auc": 0.318,
+  "test_roc_auc": 0.7646,
+  "test_f1_denied": 0.3697,
+  "test_precision_denied": 0.5528,
+  "test_recall_denied": 0.2777,
+  "test_accuracy": 0.9345,
+  "baseline_accuracy_always_approve": 0.9309,
+  "source": "Extracted from the stored outputs of notebooks/IT25101547_DecisionTree.ipynb (run 2026-10-04), not recomputed"
+}
