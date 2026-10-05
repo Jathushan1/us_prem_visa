@@ -152,11 +152,11 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
 
 | Member | Model | Notebook | Results folder | Status |
 |---|---|---|---|---|
-| IT25100285 | Logistic Regression | [`IT25100285_LogisticRegression.ipynb`](notebooks/IT25100285_LogisticRegression.ipynb) | `results/models/IT25100285_LogisticRegression/` | Code written, to be run |
+| IT25100285 | Logistic Regression | [`IT25100285_LogisticRegression.ipynb`](notebooks/IT25100285_LogisticRegression.ipynb) | `results/models/IT25100285_LogisticRegression/` | Done (test PR-AUC 0.321) |
 | IT25101547 | Decision Tree | [`IT25101547_DecisionTree.ipynb`](notebooks/IT25101547_DecisionTree.ipynb) | `results/models/IT25101547_DecisionTree/` | Done (metrics saved) |
-| IT25103364 | Random Forest | `IT25103364_RandomForest.ipynb` | `results/models/IT25103364_RandomForest/` | In review (PR #2) |
+| IT25103364 | Random Forest | [`IT25103364_RandomForest.ipynb`](notebooks/IT25103364_RandomForest.ipynb) | `results/models/IT25103364_RandomForest/` | Done (test PR-AUC 0.465); `test_metrics.json` still to add |
 | IT25101145 | XGBoost | `IT25101145_XGBoost.ipynb` | `results/models/IT25101145_XGBoost/` | To do |
-| IT25102357 | SVM | `IT25102357_SVM.ipynb` | `results/models/IT25102357_SVM/` | To do |
+| IT25102357 | SVM (LinearSVC) | [`IT25102357_SVM.ipynb`](notebooks/IT25102357_SVM.ipynb) | `results/models/IT25102357_SVM/` | Done (test PR-AUC 0.318) |
 | IT25103041 | MLP | `IT25103041_MLP.ipynb` | `results/models/IT25103041_MLP/` | To do |
 
 **Model notes:**
