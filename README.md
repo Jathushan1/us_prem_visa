@@ -5,7 +5,7 @@
 
 This repository contains:
 - **Preprocessing (Progress Review I):** six member stage notebooks plus an integrated `group_pipeline.ipynb`, producing two leakage-free, model-ready datasets.
-- **Models (Final Evaluation):** one model notebook per member, each saving its results to `results/models/<IT>_<Model>/`, plus a 6-model comparison in `group_pipeline.ipynb`.
+- **Models (Final Evaluation):** one model notebook per member, each saving its results to `results/models/<IT>_<Model>/`, plus a model comparison and a fairness check in `group_pipeline.ipynb`. **4 of 6 models are complete; the best is Random Forest (test PR-AUC 0.465)**; see [Results](#results-4-models).
 
 ---
 
@@ -26,7 +26,19 @@ This repository contains:
 
 ---
 
-## 2. Group Members & Preprocessing Assignments
+## 2. Group Members & Roles
+
+| IT Number | Preprocessing stage (Progress Review I) | Model (Final Evaluation) | Model notebook |
+|---|---|---|---|
+| `IT25101547` | S1 Missing & Invalid Data Handling | Decision Tree | [`IT25101547_DecisionTree.ipynb`](notebooks/IT25101547_DecisionTree.ipynb) |
+| `IT25103364` | S2 Categorical Encoding | Random Forest | [`IT25103364_RandomForest.ipynb`](notebooks/IT25103364_RandomForest.ipynb) |
+| `IT25101145` | S3 Outlier Treatment | XGBoost | *not submitted* |
+| `IT25102357` | S4 Feature Engineering (Creation) | Support Vector Machine (LinearSVC) | [`IT25102357_SVM.ipynb`](notebooks/IT25102357_SVM.ipynb) |
+| `IT25103041` | S5 Normalization & Scaling | Neural Network (MLP) | *not submitted* |
+| `IT25100285` | S6 Feature Selection & Redundancy Filtering | Logistic Regression | [`IT25100285_LogisticRegression.ipynb`](notebooks/IT25100285_LogisticRegression.ipynb) |
+| **All** | Integrated preprocessing pipeline | Model comparison + fairness check | [`group_pipeline.ipynb`](group_pipeline.ipynb) |
+
+### Preprocessing chain (inputs and outputs)
 
 | Member | IT Number | Technique | Notebook | Input | Output |
 |---|---|---|---|---|---|
@@ -36,7 +48,7 @@ This repository contains:
 | **M4** | `IT25102357` | Feature Engineering — Creation | [`4_IT25102357_FeatureEngineering.ipynb`](notebooks/4_IT25102357_FeatureEngineering.ipynb) | `stage3_outliers_treated.parquet` | `stage4_features_created.parquet` |
 | **M5** | `IT25103041` | Normalization & Scaling | [`5_IT25103041_Scaling.ipynb`](notebooks/5_IT25103041_Scaling.ipynb) | `stage4_features_created.parquet` | `stage5_scaled.parquet` |
 | **M6** | `IT25100285` | Feature Selection & Redundancy Filtering | [`6_IT25100285_FeatureSelection.ipynb`](notebooks/6_IT25100285_FeatureSelection.ipynb) | `stage5_scaled.parquet` + `stage4_features_created.parquet` | **handover B (default) + A (optional)** |
-| **Group** | All | Integrated pipeline + model workspaces | [`group_pipeline.ipynb`](group_pipeline.ipynb) | raw CSV | all of the above |
+| **Group** | All | Integrated pipeline + model comparison | [`group_pipeline.ipynb`](group_pipeline.ipynb) | raw CSV | all of the above |
 
 > The numeric prefix (`1_` … `6_`) is the run order of the preprocessing chain. Model notebooks are listed in [section 6](#6-model-phase-final-evaluation).
 
@@ -144,20 +156,37 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
         └── IT25103041_MLP.ipynb                ─┘
                          │
                          ▼
-        group_pipeline.ipynb → reads the six test_metrics.json files
-                             → comparison table + chart → best model (group mark)
+        group_pipeline.ipynb → loads each model's saved test scores, recomputes every metric
+                               with one common function, checks them against test_metrics.json
+                             → comparison table + charts → best model → fairness check (group mark)
 ```
+
+### Results (4 models)
+All models use handover B, the same train/test split and the same 5-fold CV; the test set (70,970 rows) was used once per model. Metrics were recomputed in `group_pipeline.ipynb` and match every member's saved results.
+
+| Rank | Model | Member | CV PR-AUC (mean ± std) | Test PR-AUC | ROC-AUC | F1 (Denied) | Precision | Recall | Accuracy |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | **Random Forest** | IT25103364 | **0.472 ± 0.011** | **0.465** | **0.843** | **0.435** | **0.516** | 0.376 | 0.933 |
+| 2 | Decision Tree | IT25101547 | 0.425 ± 0.010 | 0.416 | 0.809 | 0.393 | 0.492 | 0.327 | 0.930 |
+| 3 | Logistic Regression | IT25100285 | 0.328 ± 0.008 | 0.321 | 0.767 | 0.328 | 0.286 | 0.386 | 0.891 |
+| 4 | LinearSVC | IT25102357 | 0.325 ± 0.007 | 0.318 | 0.766 | 0.328 | 0.319 | 0.337 | 0.904 |
+| — | *Always approve (baseline)* | — | 0.069 | 0.069 | 0.500 | 0 | — | 0 | 0.931 |
+
+- **Best model: Random Forest.** Highest CV PR-AUC, about 4 standard deviations above the Decision Tree, and confirmed on the test set. Tree models capture the threshold and interaction effects (e.g. offered wage below the prevailing wage) that the two linear models can't.
+- **No overfitting:** CV and test PR-AUC agree for every model.
+- **Fairness check:** the best model wrongly flags 22.6% of approved Mexican applicants vs 2.6% overall, so it should only prioritise applications for human review (details in `group_pipeline.ipynb`, Ethics section).
+- Charts and tables: [`results/models/group_comparison/`](results/models/group_comparison/) (`model_comparison.csv/.png`, `fairness_by_citizenship.csv/.png`).
 
 ### Model notebooks and result folders
 
 | Member | Model | Notebook | Results folder | Status |
 |---|---|---|---|---|
 | IT25100285 | Logistic Regression | [`IT25100285_LogisticRegression.ipynb`](notebooks/IT25100285_LogisticRegression.ipynb) | `results/models/IT25100285_LogisticRegression/` | Done (test PR-AUC 0.321) |
-| IT25101547 | Decision Tree | [`IT25101547_DecisionTree.ipynb`](notebooks/IT25101547_DecisionTree.ipynb) | `results/models/IT25101547_DecisionTree/` | Done (metrics saved) |
-| IT25103364 | Random Forest | [`IT25103364_RandomForest.ipynb`](notebooks/IT25103364_RandomForest.ipynb) | `results/models/IT25103364_RandomForest/` | Done (test PR-AUC 0.465); `test_metrics.json` still to add |
-| IT25101145 | XGBoost | `IT25101145_XGBoost.ipynb` | `results/models/IT25101145_XGBoost/` | To do |
+| IT25101547 | Decision Tree | [`IT25101547_DecisionTree.ipynb`](notebooks/IT25101547_DecisionTree.ipynb) | `results/models/IT25101547_DecisionTree/` | Done (test PR-AUC 0.416) |
+| IT25103364 | Random Forest | [`IT25103364_RandomForest.ipynb`](notebooks/IT25103364_RandomForest.ipynb) | `results/models/IT25103364_RandomForest/` | Done (test PR-AUC 0.465) |
+| IT25101145 | XGBoost | `IT25101145_XGBoost.ipynb` | `results/models/IT25101145_XGBoost/` | Not submitted |
 | IT25102357 | SVM (LinearSVC) | [`IT25102357_SVM.ipynb`](notebooks/IT25102357_SVM.ipynb) | `results/models/IT25102357_SVM/` | Done (test PR-AUC 0.318) |
-| IT25103041 | MLP | `IT25103041_MLP.ipynb` | `results/models/IT25103041_MLP/` | To do |
+| IT25103041 | MLP | `IT25103041_MLP.ipynb` | `results/models/IT25103041_MLP/` | Not submitted |
 
 **Model notes:**
 - **Decision Tree / Random Forest / XGBoost:** scaling doesn't affect trees; handover A is an optional variety. Tune Random Forest on a train subsample if it's slow. XGBoost on macOS needs `brew install libomp`.
@@ -173,7 +202,7 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
 6. **Threshold** chosen from out-of-fold predictions on the train rows (optional but recommended).
 7. **One final test evaluation:** PR-AUC, ROC-AUC, F1 / precision / recall for Denied, confusion matrix, accuracy next to the 93.1% baseline.
 8. **Interpretation** (coefficients / feature importances) + limitations.
-9. **Save results** to `results/models/<IT>_<Model>/`, including a `test_metrics.json` with these keys:
+9. **Save results** to `results/models/<IT>_<Model>/`, including `test_scores.csv.gz` (columns `denied`, `score`: one row per test row, in handover order; used by the group comparison) and a `test_metrics.json` with these keys:
 
 ```json
 {
@@ -196,7 +225,7 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
 | Part | Shown | Marks |
 |---|---|---|
 | Individual | Your model notebook: suitability, implementation, tuning method, varieties + CV metrics, comparison and conclusion, test result, limitations | 45 each |
-| Group | The 6-model comparison table in `group_pipeline.ipynb`, the best performer and why, challenges | 10 |
+| Group | The model comparison in `group_pipeline.ipynb` (4 models), the best performer and why, challenges, fairness check | 10 |
 
 ---
 
@@ -207,7 +236,7 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
 ├── README.md                     # this file
 ├── PLAN.md                       # project plan & decisions
 ├── requirements.txt
-├── group_pipeline.ipynb          # integrated pipeline + 6 model workspaces
+├── group_pipeline.ipynb          # integrated preprocessing pipeline + model comparison + fairness check
 ├── data/
 │   ├── raw/us_perm_visas.csv     # download from Kaggle (gitignored: 298 MB)
 │   └── external/                 # reference tables: us_states, soc_major_groups, naics_sectors
@@ -219,8 +248,11 @@ final_processed.csv.gz   (handover B, same train/test rows for everyone)
 │   ├── logs/pipeline_run.log     # rows/columns per stage from the last run
 │   ├── outputs/                  # handover A/B (.csv.gz) + fitted parameters; stage*.parquet are regenerated
 │   └── models/
-│       ├── <IT>_<Model>/         # one folder per member: test_metrics.json, CV tables, plots, model file
-│       └── group_comparison/     # the 6-model comparison table + chart
+│       ├── IT25100285_LogisticRegression/   # each: test_metrics.json, CV tables, plots,
+│       ├── IT25101547_DecisionTree/         #       test_scores.csv.gz and/or model.joblib
+│       ├── IT25103364_RandomForest/
+│       ├── IT25102357_SVM/
+│       └── group_comparison/     # model_comparison.csv/.png, fairness_by_citizenship.csv/.png
 └── scripts/strip_notebook_runtime.js   # git filter: strips outputs from group_pipeline.ipynb on commit
 ```
 
@@ -237,7 +269,8 @@ git config filter.notebook-runtime.clean "node scripts/strip_notebook_runtime.js
 ```
 - Open `group_pipeline.ipynb`, select the `.venv` kernel and **Run All**. The full pipeline takes about 40 s and uses less than 2 GB of RAM.
 - Alternatively, run the stage notebooks in order: `1_…` → `6_…`. Each one reads the previous stage's output.
-- Model notebooks only need the handover files in `results/outputs/` (no raw CSV).
+- Model notebooks only need the handover files in `results/outputs/` (no raw CSV). Approximate runtimes: Logistic Regression ~18 min (the 107-feature variety V5 is slow), Decision Tree ~1.5 min, Random Forest ~1 min, SVM ~1 min.
+- The **model comparison** and **fairness check** at the end of `group_pipeline.ipynb` don't retrain anything: they read the saved files in `results/models/` (a few seconds).
 - Set `DEV_SAMPLE = 0.10` in the config cell for a fast stratified ~37k-row run.
 
 ### Option B: Google Colab
@@ -252,4 +285,4 @@ import os; os.chdir('/content/drive/MyDrive/2026-Y02-S1-MLB-B9G1-08')
 
 ## 9. AI Tool Usage (for the report, Section 7)
 
-Claude (Anthropic, Claude Code) was used to plan the pipeline, profile the dataset, draft the preprocessing code and notebooks, draft the Logistic Regression notebook and review pull requests. Every stage notebook contains assert-based verification cells, and the group pipeline checks that its output is identical to the member notebooks' output. Each member should still review, run and be able to explain their own stage before the viva.
+Claude (Anthropic, Claude Code) was used to plan the pipeline, profile the dataset, draft the preprocessing code and notebooks, draft the Logistic Regression and SVM notebooks, fix the Decision Tree evaluation, add the shared result files to the Random Forest and SVM notebooks, build the model comparison and fairness check, and review pull requests. Every stage notebook contains assert-based verification cells, and the group pipeline checks that its output is identical to the member notebooks' output. Each member should still review, run and be able to explain their own stage before the viva.
