@@ -6,19 +6,17 @@
   "params": {
     "class_weight": null,
     "criterion": "gini",
-    "max_depth": 20,
-    "min_samples_leaf": 1
+    "max_depth": 15,
+    "min_samples_leaf": 20
   },
-  "threshold": 0.5,
-  "cv_f1_mean": 0.3779,
-  "cv_pr_auc_mean": null,
-  "cv_pr_auc_std": null,
-  "test_pr_auc": 0.318,
-  "test_roc_auc": 0.7646,
-  "test_f1_denied": 0.3697,
-  "test_precision_denied": 0.5528,
-  "test_recall_denied": 0.2777,
-  "test_accuracy": 0.9345,
-  "baseline_accuracy_always_approve": 0.9309,
-  "source": "Extracted from the stored outputs of notebooks/IT25101547_DecisionTree.ipynb (run 2026-10-04), not recomputed"
+  "threshold": 0.2514,
+  "cv_pr_auc_mean": 0.4249,
+  "cv_pr_auc_std": 0.0095,
+  "test_pr_auc": 0.4162,
+  "test_roc_auc": 0.8088,
+  "test_f1_denied": 0.3925,
+  "test_precision_denied": 0.4917,
+  "test_recall_denied": 0.3266,
+  "test_accuracy": 0.9301,
+  "baseline_accuracy_always_approve": 0.9309
 }
