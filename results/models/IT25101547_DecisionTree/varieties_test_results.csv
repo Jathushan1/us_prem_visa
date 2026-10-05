@@ -1,0 +1,6 @@
+variety,accuracy,precision_denied,recall_denied,f1_denied,roc_auc,pr_auc
+DT Baseline,0.9106,0.3541,0.357,0.3555,0.6745,0.1805
+DT max_depth=10,0.9406,0.8396,0.1739,0.2881,0.8006,0.3814
+DT Balanced depth=10,0.7321,0.1637,0.6999,0.2653,0.8015,0.3748
+DT Undersampled depth=10,0.7381,0.1652,0.6883,0.2665,0.7942,0.2839
+DT GridSearch Best,0.9345,0.5528,0.2777,0.3697,0.7646,0.318

@@ -1,9 +1,11 @@
-# AIML Group Assignment: US PERM Visa Denial Prediction — Preprocessing Pipeline
+# AIML Group Assignment: US PERM Visa Denial Prediction
 
 **Module:** IT2011 Artificial Intelligence & Machine Learning (Y2S1 2026) · **Group:** 2026-Y02-S1-MLB-B9G1-08
 **Task:** binary classification — will a US PERM labor-certification application be **denied**?
 
-This repository contains the end-to-end preprocessing pipeline: six member stage notebooks plus an integrated `group_pipeline.ipynb`. The pipeline produces two leakage-free, model-ready datasets, and `group_pipeline.ipynb` has six model workspaces for the members.
+This repository contains:
+- **Preprocessing (Progress Review I):** six member stage notebooks plus an integrated `group_pipeline.ipynb`, producing two leakage-free, model-ready datasets.
+- **Models (Final Evaluation):** one model notebook per member, each saving its results to `results/models/<IT>_<Model>/`, plus a 6-model comparison in `group_pipeline.ipynb`.
 
 ---
 
@@ -28,15 +30,15 @@ This repository contains the end-to-end preprocessing pipeline: six member stage
 
 | Member | IT Number | Technique | Notebook | Input | Output |
 |---|---|---|---|---|---|
-| **M1** | `IT25101547` | Missing & Invalid Data Handling | [`IT25101547_MissingData.ipynb`](notebooks/IT25101547_MissingData.ipynb) | `data/raw/us_perm_visas.csv` | `stage1_missing_handled.parquet` |
-| **M2** | `IT25103364` | Categorical Encoding | [`IT25103364_Encoding.ipynb`](notebooks/IT25103364_Encoding.ipynb) | `stage1_missing_handled.parquet` | `stage2_encoded.parquet` |
-| **M3** | `IT25101145` | Outlier Treatment | [`IT25101145_OutlierRemoval.ipynb`](notebooks/IT25101145_OutlierRemoval.ipynb) | `stage2_encoded.parquet` | `stage3_outliers_treated.parquet` |
-| **M4** | `IT25102357` | Feature Engineering — Creation | [`IT25102357_FeatureEngineering.ipynb`](notebooks/IT25102357_FeatureEngineering.ipynb) | `stage3_outliers_treated.parquet` | `stage4_features_created.parquet` |
-| **M5** | `IT25103041` | Normalization & Scaling | [`IT25103041_Scaling.ipynb`](notebooks/IT25103041_Scaling.ipynb) | `stage4_features_created.parquet` | `stage5_scaled.parquet` |
-| **M6** | `IT25100285` | Feature Selection & Redundancy Filtering | [`IT25100285_FeatureSelection.ipynb`](notebooks/IT25100285_FeatureSelection.ipynb) | `stage5_scaled.parquet` + `stage4_features_created.parquet` | **handover B (default) + A (optional)** |
+| **M1** | `IT25101547` | Missing & Invalid Data Handling | [`1_IT25101547_MissingData.ipynb`](notebooks/1_IT25101547_MissingData.ipynb) | `data/raw/us_perm_visas.csv` | `stage1_missing_handled.parquet` |
+| **M2** | `IT25103364` | Categorical Encoding | [`2_IT25103364_Encoding.ipynb`](notebooks/2_IT25103364_Encoding.ipynb) | `stage1_missing_handled.parquet` | `stage2_encoded.parquet` |
+| **M3** | `IT25101145` | Outlier Treatment | [`3_IT25101145_OutlierRemoval.ipynb`](notebooks/3_IT25101145_OutlierRemoval.ipynb) | `stage2_encoded.parquet` | `stage3_outliers_treated.parquet` |
+| **M4** | `IT25102357` | Feature Engineering — Creation | [`4_IT25102357_FeatureEngineering.ipynb`](notebooks/4_IT25102357_FeatureEngineering.ipynb) | `stage3_outliers_treated.parquet` | `stage4_features_created.parquet` |
+| **M5** | `IT25103041` | Normalization & Scaling | [`5_IT25103041_Scaling.ipynb`](notebooks/5_IT25103041_Scaling.ipynb) | `stage4_features_created.parquet` | `stage5_scaled.parquet` |
+| **M6** | `IT25100285` | Feature Selection & Redundancy Filtering | [`6_IT25100285_FeatureSelection.ipynb`](notebooks/6_IT25100285_FeatureSelection.ipynb) | `stage5_scaled.parquet` + `stage4_features_created.parquet` | **handover B (default) + A (optional)** |
 | **Group** | All | Integrated pipeline + model workspaces | [`group_pipeline.ipynb`](group_pipeline.ipynb) | raw CSV | all of the above |
 
-> Model workspaces in `group_pipeline.ipynb` follow the same order (M1 → Decision Tree … M5 → MLP). Members can swap models; just rename the workspace headings.
+> The numeric prefix (`1_` … `6_`) is the run order of the preprocessing chain. Model notebooks are listed in [section 6](#6-model-phase-final-evaluation).
 
 ---
 
@@ -124,18 +126,81 @@ X_train, y_train = train.drop(columns=['denied', 'split']), train['denied']
    - an extra pipeline step (PCA, polynomial features)
    - optionally, handover A (all features) vs B (selected)
 
-| Workspace | Suggested model | Data | Note |
-|---|---|---|---|
-| IT25100285 | Logistic Regression | B | Interpretable baseline |
-| IT25101547 | Decision Tree | B | Scaling doesn't affect trees; optional variety: A |
-| IT25103364 | Random Forest | B | Tune on a subsample if slow; optional variety: A |
-| IT25101145 | XGBoost | B | Likely strongest; macOS needs `brew install libomp`; optional variety: A |
-| IT25102357 | SVM | B | `LinearSVC` on all rows, or RBF on ≤30k rows (kernel SVC is O(n²)) |
-| IT25103041 | MLP | B | Replaces KNN, which is too slow at 284k rows and weak with one-hot distances |
+---
+
+## 6. Model Phase (Final Evaluation)
+
+### How it works
+Each member builds **their own model in their own notebook**. Models are **not merged**; only their **results** are combined into one comparison table.
+
+```
+final_processed.csv.gz   (handover B, same train/test rows for everyone)
+        │
+        ├── IT25100285_LogisticRegression.ipynb ─┐  each member:
+        ├── IT25101547_DecisionTree.ipynb        │  1. try several varieties (5-fold CV on train rows)
+        ├── IT25103364_RandomForest.ipynb        │  2. pick the best variety, tune the threshold on train rows
+        ├── IT25101145_XGBoost.ipynb             │  3. evaluate on the test rows ONCE
+        ├── IT25102357_SVM.ipynb                 │  4. save results to results/models/<IT>_<Model>/
+        └── IT25103041_MLP.ipynb                ─┘
+                         │
+                         ▼
+        group_pipeline.ipynb → reads the six test_metrics.json files
+                             → comparison table + chart → best model (group mark)
+```
+
+### Model notebooks and result folders
+
+| Member | Model | Notebook | Results folder | Status |
+|---|---|---|---|---|
+| IT25100285 | Logistic Regression | [`IT25100285_LogisticRegression.ipynb`](notebooks/IT25100285_LogisticRegression.ipynb) | `results/models/IT25100285_LogisticRegression/` | Code written, to be run |
+| IT25101547 | Decision Tree | [`IT25101547_DecisionTree.ipynb`](notebooks/IT25101547_DecisionTree.ipynb) | `results/models/IT25101547_DecisionTree/` | Done (metrics saved) |
+| IT25103364 | Random Forest | `IT25103364_RandomForest.ipynb` | `results/models/IT25103364_RandomForest/` | In review (PR #2) |
+| IT25101145 | XGBoost | `IT25101145_XGBoost.ipynb` | `results/models/IT25101145_XGBoost/` | To do |
+| IT25102357 | SVM | `IT25102357_SVM.ipynb` | `results/models/IT25102357_SVM/` | To do |
+| IT25103041 | MLP | `IT25103041_MLP.ipynb` | `results/models/IT25103041_MLP/` | To do |
+
+**Model notes:**
+- **Decision Tree / Random Forest / XGBoost:** scaling doesn't affect trees; handover A is an optional variety. Tune Random Forest on a train subsample if it's slow. XGBoost on macOS needs `brew install libomp`.
+- **SVM:** `LinearSVC` on all rows, or RBF on ≤ 30k rows (kernel SVC is O(n²)). It has no `predict_proba`, so use `decision_function` for PR-AUC / ROC-AUC.
+- **MLP:** replaces KNN (too slow at 284k rows, weak with one-hot distances). It has no `class_weight`, so use SMOTE inside CV or threshold tuning.
+
+### What every model notebook must contain
+1. **Why this model suits the data** (markdown).
+2. **Load handover B** with the shared `split` column. No new `train_test_split`.
+3. **At least 3 varieties** (hyperparameters, class weights vs SMOTE, A vs B, …), each scored with 5-fold `StratifiedKFold(shuffle=True, random_state=42)` on the train rows: report mean ± std.
+4. **Hyperparameter tuning** with `GridSearchCV` / `RandomizedSearchCV` (`scoring='average_precision'`).
+5. **A varieties comparison table + chart**, and the best variety chosen by CV (never by the test set).
+6. **Threshold** chosen from out-of-fold predictions on the train rows (optional but recommended).
+7. **One final test evaluation:** PR-AUC, ROC-AUC, F1 / precision / recall for Denied, confusion matrix, accuracy next to the 93.1% baseline.
+8. **Interpretation** (coefficients / feature importances) + limitations.
+9. **Save results** to `results/models/<IT>_<Model>/`, including a `test_metrics.json` with these keys:
+
+```json
+{
+  "member": "IT25100285", "model": "Logistic Regression", "variety": "V3", "dataset": "B",
+  "params": {"C": 0.1}, "threshold": 0.72,
+  "cv_pr_auc_mean": 0.343, "cv_pr_auc_std": 0.008,
+  "test_pr_auc": 0.336, "test_roc_auc": 0.775,
+  "test_f1_denied": 0.340, "test_precision_denied": 0.321, "test_recall_denied": 0.361,
+  "test_accuracy": 0.903, "baseline_accuracy_always_approve": 0.931
+}
+```
+
+### Rules for model pull requests
+- Work in **your own notebook** (`notebooks/<IT>_<Model>.ipynb`) on a branch, then open a PR. Don't edit other members' files.
+- Save model files **only** in `results/models/<IT>_<Model>/`. `results/outputs/` and `results/eda_visualizations/` belong to the preprocessing deliverable.
+- Don't use `matplotlib.use("Agg")` in notebooks; it hides all plots.
+- Use a descriptive commit message, e.g. `Add Random Forest model (IT25103364)`.
+
+### What is shown in the Final Evaluation viva
+| Part | Shown | Marks |
+|---|---|---|
+| Individual | Your model notebook: suitability, implementation, tuning method, varieties + CV metrics, comparison and conclusion, test result, limitations | 45 each |
+| Group | The 6-model comparison table in `group_pipeline.ipynb`, the best performer and why, challenges | 10 |
 
 ---
 
-## 6. Repository Structure
+## 7. Repository Structure
 
 ```
 2026-Y02-S1-MLB-B9G1-08/
@@ -146,17 +211,22 @@ X_train, y_train = train.drop(columns=['denied', 'split']), train['denied']
 ├── data/
 │   ├── raw/us_perm_visas.csv     # download from Kaggle (gitignored: 298 MB)
 │   └── external/                 # reference tables: us_states, soc_major_groups, naics_sectors
-├── notebooks/                    # one notebook per member (IT number + technique)
+├── notebooks/
+│   ├── 1_IT25101547_MissingData.ipynb … 6_IT25100285_FeatureSelection.ipynb   # preprocessing, run in order
+│   └── <IT>_<Model>.ipynb                                                     # one model notebook per member
 ├── results/
-│   ├── eda_visualizations/       # m0–m6 PNG plots
+│   ├── eda_visualizations/       # m0–m6 preprocessing plots only
 │   ├── logs/pipeline_run.log     # rows/columns per stage from the last run
-│   └── outputs/                  # handover A/B (.csv.gz) + fitted parameters; stage*.parquet are regenerated
+│   ├── outputs/                  # handover A/B (.csv.gz) + fitted parameters; stage*.parquet are regenerated
+│   └── models/
+│       ├── <IT>_<Model>/         # one folder per member: test_metrics.json, CV tables, plots, model file
+│       └── group_comparison/     # the 6-model comparison table + chart
 └── scripts/strip_notebook_runtime.js   # git filter: strips outputs from group_pipeline.ipynb on commit
 ```
 
 ---
 
-## 7. How to Run
+## 8. How to Run
 
 ### Option A: VS Code / local Jupyter
 ```bash
@@ -166,7 +236,8 @@ pip install -r requirements.txt
 git config filter.notebook-runtime.clean "node scripts/strip_notebook_runtime.js"   # once per clone
 ```
 - Open `group_pipeline.ipynb`, select the `.venv` kernel and **Run All**. The full pipeline takes about 40 s and uses less than 2 GB of RAM.
-- Alternatively, run the stage notebooks in order: S1 → S6. Each one reads the previous stage's output.
+- Alternatively, run the stage notebooks in order: `1_…` → `6_…`. Each one reads the previous stage's output.
+- Model notebooks only need the handover files in `results/outputs/` (no raw CSV).
 - Set `DEV_SAMPLE = 0.10` in the config cell for a fast stratified ~37k-row run.
 
 ### Option B: Google Colab
@@ -179,6 +250,6 @@ import os; os.chdir('/content/drive/MyDrive/2026-Y02-S1-MLB-B9G1-08')
 
 ---
 
-## 8. AI Tool Usage (for the report, Section 7)
+## 9. AI Tool Usage (for the report, Section 7)
 
-Claude (Anthropic, Claude Code) was used to plan the pipeline, profile the dataset and draft preprocessing code and notebooks. Every stage notebook contains assert-based verification cells, and the group pipeline checks that its output is identical to the member notebooks' output. Each member should still review, run and be able to explain their own stage before the viva.
+Claude (Anthropic, Claude Code) was used to plan the pipeline, profile the dataset, draft the preprocessing code and notebooks, draft the Logistic Regression notebook and review pull requests. Every stage notebook contains assert-based verification cells, and the group pipeline checks that its output is identical to the member notebooks' output. Each member should still review, run and be able to explain their own stage before the viva.

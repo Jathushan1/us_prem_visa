@@ -1,0 +1,23 @@
+{
+  "member": "IT25100285",
+  "model": "Logistic Regression",
+  "variety": "V3",
+  "dataset": "B",
+  "params": {
+    "C": 0.1,
+    "l1_ratio": 0.5,
+    "class_weight": "balanced",
+    "solver": "saga"
+  },
+  "threshold": 0.6899,
+  "cv_pr_auc_mean": 0.3281,
+  "cv_pr_auc_std": 0.008,
+  "test_pr_auc": 0.3212,
+  "test_roc_auc": 0.7666,
+  "test_f1_denied": 0.3285,
+  "test_precision_denied": 0.2856,
+  "test_recall_denied": 0.3863,
+  "test_balanced_accuracy": 0.6573,
+  "test_accuracy": 0.8908,
+  "baseline_accuracy_always_approve": 0.9309
+}

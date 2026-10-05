@@ -1,9 +1,9 @@
-2026-10-03 13:57:02 | Stage 0 load & integrate           |   374,362 rows |   26 cols | m0 plot saved
-2026-10-03 13:57:05 | Stage 1 missing & invalid          |   354,849 rows |   21 cols | denied 6.91%
-2026-10-03 13:57:06 | Stage 2 categorical encoding       |   354,849 rows |  106 cols | 
-2026-10-03 13:57:06 | Stage 3 outlier treatment          |   354,849 rows |  106 cols | 
-2026-10-03 13:57:07 | Stage 4 feature engineering        |   354,849 rows |  111 cols | 
-2026-10-03 13:57:08 | Stage 5 scaling                    |   354,849 rows |  111 cols | 
-2026-10-03 13:57:34 | Stage 6 handover A (all, unscaled) |   354,849 rows |  109 cols | 
-2026-10-03 13:57:34 | Stage 6 handover B (selected, scaled) |   354,849 rows |   27 cols | 
+2026-10-05 13:47:25 | Stage 0 load & integrate           |   374,362 rows |   26 cols | m0 plot saved
+2026-10-05 13:47:27 | Stage 1 missing & invalid          |   354,849 rows |   21 cols | denied 6.91%
+2026-10-05 13:47:29 | Stage 2 categorical encoding       |   354,849 rows |  106 cols | 
+2026-10-05 13:47:29 | Stage 3 outlier treatment          |   354,849 rows |  106 cols | 
+2026-10-05 13:47:30 | Stage 4 feature engineering        |   354,849 rows |  111 cols | 
+2026-10-05 13:47:31 | Stage 5 scaling                    |   354,849 rows |  111 cols | 
+2026-10-05 13:47:56 | Stage 6 handover A (all, unscaled) |   354,849 rows |  109 cols | 
+2026-10-05 13:47:56 | Stage 6 handover B (selected, scaled) |   354,849 rows |   27 cols | 
 Total runtime: 39s | dev_sample=None
