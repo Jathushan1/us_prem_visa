@@ -1,0 +1,50 @@
+{
+  "threshold 0.5": {
+    "threshold": 0.5,
+    "confusion_matrix": [
+      [
+        63819,
+        2246
+      ],
+      [
+        2914,
+        1991
+      ]
+    ],
+    "Precision (Denied)": 0.46990795374085437,
+    "Recall (Denied)": 0.4059123343527013,
+    "F1 (Denied)": 0.4355720848829578,
+    "Macro-F1": 0.6983580390076922,
+    "Accuracy": 0.9272932224883754,
+    "Always-approve accuracy": 0.9308862899816824
+  },
+  "OOF threshold 0.518": {
+    "threshold": 0.5180042062570613,
+    "confusion_matrix": [
+      [
+        64151,
+        1914
+      ],
+      [
+        3002,
+        1903
+      ]
+    ],
+    "Precision (Denied)": 0.49855907780979825,
+    "Recall (Denied)": 0.3879714576962283,
+    "F1 (Denied)": 0.43636780554918597,
+    "Macro-F1": 0.6997329426941234,
+    "Accuracy": 0.9307312949133437,
+    "Always-approve accuracy": 0.9308862899816824
+  },
+  "PR-AUC": 0.46453922462204517,
+  "ROC-AUC": 0.8432309128107469,
+  "best_params": {
+    "n_estimators": "100",
+    "min_samples_leaf": "5",
+    "max_features": "sqrt",
+    "max_depth": "20",
+    "class_weight": "{0: 1, 1: 5}"
+  },
+  "threshold_source": "out-of-fold predictions on train rows not used for tuning"
+}
